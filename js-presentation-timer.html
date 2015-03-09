@@ -9,7 +9,7 @@
                 background-color: black;
                 margin:0px;
             }
-            .Aligner {
+            .aligner {
                 display: flex;
                 align-items: center;
                 height: 100%;
@@ -17,22 +17,8 @@
                 position:absolute;
                 justify-content: center;
             }
-
-            .Aligner-item {
+            .aligner-item {
                 flex: 1;
-            }
-
-            .Aligner-item--top {
-                align-self: flex-start;
-            }
-
-            .Aligner-item--bottom {
-                align-self: flex-end;
-            }
-
-            .Aligner-item--fixed {
-                flex: none;
-                max-width: 50%;
             }
             .text{
                 text-align: center;
@@ -48,17 +34,15 @@
     <body>
         <div style="position:absolute;height:100%;width:50%;top:0px;left:0px;z-index:9;" onclick="stop();"></div>
         <div style="position:absolute;height:100%;width:50%;top:0px;right:0px;z-index:9;" onclick="start();"></div>
-        <div class="Aligner">
-            <div class="Aligner-item Aligner-item--top"></div>
-            <div class="Aligner-item text" id="texxt">-</div>
-            <div class="Aligner-item Aligner-item--bottom"></div>
+        <div class="aligner">
+            <div class="aligner-item text" id="timerDisplay">-</div>
         </div>
         <script>
             var INTERVAL = 120; // change this if you want to change the timer interval (in seconds)
             var status = 0;
             var counter = INTERVAL;
 
-            var txt = document.getElementById("texxt");
+            var txt = document.getElementById("timerDisplay");
 
             function start() {
                 status = 1;
