@@ -28,42 +28,87 @@
                 font-family: sans-serif;
                 text-shadow: 0px 1px 0px #616161,0px 2px 0px #5A5A5A,0px 3px 0px #494949,0px 4px 0px #444444;
             }
+            .settings{
+                color: whitesmoke;
+                font-weight: bold;
+                font-family: sans-serif;
+                border-left: 2px solid rgb(63, 63, 63);
+                padding-left: 15px;
+                display:none;
+            }
+            .settings h1{
+                text-shadow: 0px 1px 0px #616161,0px 2px 0px #5A5A5A,0px 3px 0px #494949;
+            }
+            .settings .time{
+                padding: 5px;
+                font-weight: bold;
+                width: 51px;
+            }
+            .settings .button{
+                padding: 5px;
+                border: none;
+                border-radius: 2px;
+            }
+            .controller{
+                position:absolute;
+                height:100%;
+                width:50%;
+                top:0px;
+                z-index:9;
+            }
         </style>
-        
+
     </head>
     <body>
-        <div style="position:absolute;height:100%;width:50%;top:0px;left:0px;z-index:9;" onclick="stop();"></div>
-        <div style="position:absolute;height:100%;width:50%;top:0px;right:0px;z-index:9;" onclick="start();"></div>
+        <div id="stopController" class="controller" style="left:0px;" onclick="stop();"></div>
+        <div id="startController" class="controller" style="right:0px;" onclick="start();"></div>
+
         <div class="aligner">
             <div class="aligner-item text" id="timerDisplay">-</div>
+            <div class="aligner-item settings" id="timerSettings">
+                <h1>Settings</h1>
+                <p>Time:</p>
+                <input class="time" type="text" value="120" id="counterValue"/>
+                <p>Color text below 11 seconds:</p>
+                <input type="checkbox" checked="checked"/>
+                <p><input class="button" type="button" value="Set" onclick="setTimer();"/>
+                    <input class="button" type="button" value="Close settings" onclick="hideSettings()"/></p>
+            </div>
         </div>
         <script>
             var INTERVAL = 120; // change this if you want to change the timer interval (in seconds)
             var status = 0;
             var counter = INTERVAL;
+            var minutes, seconds, t;
+            var timerDisplay = document.getElementById("timerDisplay");
+            var timerSettings = document.getElementById("timerSettings");
+            var stopController = document.getElementById("stopController");
+            var startController = document.getElementById("startController");
+            var counterValue = document.getElementById("counterValue");
 
-            var txt = document.getElementById("timerDisplay");
+            function displayTime() {
+                minutes = Math.floor(counter / 60);
+                minutes = (minutes > 9) ? minutes : "0" + minutes;
+                seconds = counter - (minutes * 60);
+                seconds = (seconds > 9) ? seconds : "0" + seconds;
+                if (counter > 10) {
+                    timerDisplay.style.color = "whitesmoke";
+                    timerDisplay.style.textShadow = "0px 1px 0px #616161,0px 2px 0px #5A5A5A,0px 3px 0px #494949,0px 4px 0px #444444";
+                }
+                else
+                {
+                    timerDisplay.style.color = "rgb(255, 68, 68)";
+                    timerDisplay.style.textShadow = "0px 1px 0px #AB0000,0px 2px 0px #B20000,0px 3px 0px #880000,0px 4px 0px #620000";
+                }
+                timerDisplay.innerHTML = minutes + ":" + seconds;
+            }
 
             function start() {
                 status = 1;
                 counter--;
-                var perc = Math.floor(counter / 60);
-                perc = (perc > 9) ? perc : "0" + perc;
-                var mp = counter - (perc * 60);
-                mp = (mp > 9) ? mp : "0" + mp;
-                
-                if (counter > 10){
-                    txt.style.color = "whitesmoke";
-                    txt.style.textShadow = "0px 1px 0px #616161,0px 2px 0px #5A5A5A,0px 3px 0px #494949,0px 4px 0px #444444";
-                }
-                else
-                {
-                    txt.style.color = "rgb(255, 68, 68)";
-                    txt.style.textShadow = "0px 1px 0px #AB0000,0px 2px 0px #B20000,0px 3px 0px #880000,0px 4px 0px #620000";
-                }
-                
-                txt.innerHTML = perc + ":" + mp;
-                var t = setTimeout(function () {
+
+                displayTime();
+                t = setTimeout(function () {
                     if (status == 1 && counter > 0) {
                         start();
                     }
@@ -74,13 +119,31 @@
                 if (status == 1) {
                     status = 0;
                 } else if (status == 0) {
+                    status = -1;
                     counter = INTERVAL;
-                    var perc = Math.floor(counter / 60);
-                    perc = (perc > 9) ? perc : "0" + perc;
-                    var mp = counter - (perc * 60);
-                    mp = (mp > 9) ? mp : "0" + mp;
-                    txt.innerHTML = perc + ":" + mp;
+                    displayTime();
+                } else if (status == -1) {
+                    showSettings();
                 }
+            }
+
+            function showSettings() {
+                console.log(32443);
+                timerSettings.style.display = "block";
+                stopController.style.display = "none";
+                startController.style.display = "none";
+            }
+
+            function hideSettings() {
+                timerSettings.style.display = "none";
+                stopController.style.display = "block";
+                startController.style.display = "block";
+            }
+            
+            function setTimer(){
+                INTERVAL = counterValue.value;
+                status = 0;
+                stop();
             }
         </script>
     </body>
