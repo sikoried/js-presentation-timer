@@ -3,7 +3,7 @@
 
 Use of the timer:
 
-1. Open with a webbrowser
+1. Open file "js-presentation-timer.html" with your web browser
 2. Push F11 for full screen
 3. Click on the **right** side of the screen and the timer will __start__
 4. Click on the **left** side of the screen and the timer will __pause__, and if you click again then it will __reset__ the timer
