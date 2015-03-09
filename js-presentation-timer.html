@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>js-presentation-timer</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>
+            body{
+                background-color: black;
+                margin:0px;
+            }
+            .Aligner {
+                display: flex;
+                align-items: center;
+                height: 100%;
+                width: 100%;
+                position:absolute;
+                justify-content: center;
+            }
+
+            .Aligner-item {
+                flex: 1;
+            }
+
+            .Aligner-item--top {
+                align-self: flex-start;
+            }
+
+            .Aligner-item--bottom {
+                align-self: flex-end;
+            }
+
+            .Aligner-item--fixed {
+                flex: none;
+                max-width: 50%;
+            }
+            .text{
+                text-align: center;
+                font-size: 207px;
+                color: whitesmoke;
+                font-weight: bold;
+                font-family: sans-serif;
+                text-shadow: 0px 1px 0px #616161,0px 2px 0px #5A5A5A,0px 3px 0px #494949,0px 4px 0px #444444;
+            }
+        </style>
+        
+    </head>
+    <body>
+        <div style="position:absolute;height:100%;width:50%;top:0px;left:0px;z-index:9;" onclick="stop();"></div>
+        <div style="position:absolute;height:100%;width:50%;top:0px;right:0px;z-index:9;" onclick="start();"></div>
+        <div class="Aligner">
+            <div class="Aligner-item Aligner-item--top"></div>
+            <div class="Aligner-item text" id="texxt">-</div>
+            <div class="Aligner-item Aligner-item--bottom"></div>
+        </div>
+        <script>
+            var INTERVAL = 120; // change this if you want to change the timer interval (in seconds)
+            var status = 0;
+            var counter = INTERVAL;
+
+            var txt = document.getElementById("texxt");
+
+            function start() {
+                status = 1;
+                counter--;
+                var perc = Math.floor(counter / 60);
+                perc = (perc > 9) ? perc : "0" + perc;
+                var mp = counter - (perc * 60);
+                mp = (mp > 9) ? mp : "0" + mp;
+                
+                if (counter > 10){
+                    txt.style.color = "whitesmoke";
+                    txt.style.textShadow = "0px 1px 0px #616161,0px 2px 0px #5A5A5A,0px 3px 0px #494949,0px 4px 0px #444444";
+                }
+                else
+                {
+                    txt.style.color = "rgb(255, 68, 68)";
+                    txt.style.textShadow = "0px 1px 0px #AB0000,0px 2px 0px #B20000,0px 3px 0px #880000,0px 4px 0px #620000";
+                }
+                
+                txt.innerHTML = perc + ":" + mp;
+                var t = setTimeout(function () {
+                    if (status == 1 && counter > 0) {
+                        start();
+                    }
+                }, 1000);
+            }
+
+            function stop() {
+                if (status == 1) {
+                    status = 0;
+                } else if (status == 0) {
+                    counter = INTERVAL;
+                    var perc = Math.floor(counter / 60);
+                    perc = (perc > 9) ? perc : "0" + perc;
+                    var mp = counter - (perc * 60);
+                    mp = (mp > 9) ? mp : "0" + mp;
+                    txt.innerHTML = perc + ":" + mp;
+                }
+            }
+        </script>
+    </body>
+</html>
